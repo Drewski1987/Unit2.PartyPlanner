@@ -45,7 +45,7 @@ eventForm.innerHTML = `
     <h1> Create Event </h1>
     <input type="text" id="eventName" placeholder="Event Name" required />
     <input type="text" id="eventDescription" placeholder="Description" required />
-    <input type="datetime-local" id="eventDate" required />
+    <input type="datetime" id="eventDate" required />
     <input type="text" id="eventLocation" placeholder="Location" required /> <br>
     <button type="Submit">Create Event</button>
     `
@@ -65,3 +65,34 @@ eventForm.innerHTML = `
     })
     
 }
+
+async function removeEvent(eventId){
+    try{
+      await fetch(`${baseUrl}/${eventId}`,{
+        method: "DELETE",
+      })
+      console.log("Event deleted")
+
+      await getEvents()
+
+    } catch (error){
+      console.error(error)
+    }
+  }
+
+  async function createEvent(newEventInfo){
+    console.log(newEventInfo)
+    try {
+      const response = await fetch (baseUrl, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(newEventInfo)
+      })
+const result = await response.json()
+console.log(result)
+      await getEvents()
+
+    } catch (error){
+      console.error(error)
+    }
+  }
